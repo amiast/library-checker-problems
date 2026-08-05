@@ -3,7 +3,7 @@
 #include "../params.h"
 
 int main(int, char* argv[]) {
-    long long seed = atoll(argv[1]);
+    long long seed = atoll(argv[1]) ^ 0x5c7e1eb4157b60fd;
     auto gen = Random(seed);
 
     int N = N_MAX;

@@ -3,7 +3,7 @@
 #include "../params.h"
 
 int main(int, char* argv[]) {
-    long long seed = atoll(argv[1]);
+    long long seed = atoll(argv[1]) ^ 0x90b1d36aa6edf89e;
     auto gen = Random(seed);
 
     int N = gen.uniform<int>(std::max(N_MAX - 1000, N_MIN), N_MAX);

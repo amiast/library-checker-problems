@@ -3,11 +3,11 @@
 #include "../params.h"
 
 int main(int, char* argv[]) {
-    long long seed = atoll(argv[1]);
+    long long seed = atoll(argv[1]) ^ 0x7d2341b37bcaff40;
     auto gen = Random(seed);
 
-    int N = gen.uniform<int>(N_MIN, N_MAX);
-    int Q = gen.uniform<int>(Q_MIN, Q_MAX);
+    int N = gen.uniform<int>(std::max<int>(N_MIN, N_MAX - 1000), N_MAX);
+    int Q = gen.uniform<int>(std::max<int>(Q_MIN, Q_MAX - 1000), Q_MAX);
     printf("%d %d\n", N, Q);
 
     auto gen_pair = [&]() -> std::pair<int, int> {
