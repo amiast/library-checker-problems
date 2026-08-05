@@ -6,6 +6,30 @@ forum = "https://github.com/yosupo06/library-checker-problems/issues/1213"
     name = "example.in"
     number = 2
 
+[[tests]]
+    name = "small_n_q.cpp"
+    number = 3
+
+[[tests]]
+    name = "small_n.cpp"
+    number = 3
+
+[[tests]]
+    name = "small_q.cpp"
+    number = 3
+
+[[tests]]
+    name = "random.cpp"
+    number = 3
+
+[[tests]]
+    name = "max_n_q.cpp"
+    number = 3
+
+[[solutions]]
+    name = "naive.cpp"
+    allow_tle = true
+
 [params]
     N_MIN = 1
     N_MAX = 100_000
