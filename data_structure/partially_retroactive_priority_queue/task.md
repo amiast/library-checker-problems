@@ -45,11 +45,11 @@ $Q$ 個のクエリが与えられます。各クエリ $q=0, 1, \dots, Q-1$ を
 - $@{param.Q_MIN} \leq Q \leq @{param.Q_MAX}$
 - $0 \leq t_i \leq 2$
 - If $t_i=0$, $@{param.X_MIN} \leq x_i \leq @{param.X_MAX}$
-- If $t_i\in\{1, 2\}$, $x_i=-1$
+- If $t_i\in\lbrace 1, 2 \rbrace$, $x_i=-1$
 - $0 \leq k_q \lt N$
 - $0 \leq a_q \leq 2$
 - If $a_q=0$, $@{param.X_MIN} \leq b_q \leq @{param.X_MAX}$
-- If $a_q\in\{1, 2\}$, $b_q=-1$
+- If $a_q\in\lbrace 1, 2 \rbrace$, $b_q=-1$
 
 @{lang.ja}
 
@@ -57,11 +57,11 @@ $Q$ 個のクエリが与えられます。各クエリ $q=0, 1, \dots, Q-1$ を
 - $@{param.Q_MIN} \leq Q \leq @{param.Q_MAX}$
 - $0 \leq t_i \leq 2$
 - $t_i=0$ の場合、$@{param.X_MIN} \leq x_i \leq @{param.X_MAX}$
-- $t_i\in\{1, 2\}$ の場合、$x_i=-1$
+- $t_i\in\lbrace 1, 2 \rbrace$ の場合、$x_i=-1$
 - $0 \leq k_q \lt N$
 - $0 \leq a_q \leq 2$
 - $a_q=0$ の場合、$@{param.X_MIN} \leq b_q \leq @{param.X_MAX}$
-- $a_q\in\{1, 2\}$ の場合、$b_q=-1$
+- $a_q\in\lbrace 1, 2 \rbrace$ の場合、$b_q=-1$
 
 @{lang.end}
 
