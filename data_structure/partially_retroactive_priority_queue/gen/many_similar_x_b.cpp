@@ -30,7 +30,7 @@ int main(int, char* argv[]) {
 
     for (int i = 0; i < Q; i++) {
         int k = gen.uniform<int>(0, N - 1);
-        int b = gen.uniform<int>(X_MIN, X_MAX);
-        printf("%d %d %d\n", k, 0, b);
+        auto [a, b] = gen_pair();
+        printf("%d %d %d\n", k, a, b);
     }
 }
