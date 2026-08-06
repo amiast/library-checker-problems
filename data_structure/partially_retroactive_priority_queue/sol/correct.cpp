@@ -42,9 +42,14 @@ struct partially_retroactive_priority_queue {
     int next_bridge(int i) const {
         int acc = 0;
         for (int l = seglen, r = seglen + i + 1; l < r; l >>= 1, r >>= 1) {
-            if (~r & 1) continue;
-            r--;
-            acc += segtree[r].sum;
+            if (l & 1) {
+                acc += segtree[l].sum;
+                l++;
+            }
+            if (r & 1) {
+                r--;
+                acc += segtree[r].sum;
+            }
         }
         if (acc == 0) return i;
         int l = seglen + i + 1;
@@ -69,9 +74,14 @@ struct partially_retroactive_priority_queue {
     int prev_bridge(int i) const {
         int acc = 0;
         for (int l = seglen + i, r = seglen * 2; l < r; l >>= 1, r >>= 1) {
-            if (~l & 1) continue;
-            acc += segtree[l].sum;
-            l++;
+            if (l & 1) {
+                acc += segtree[l].sum;
+                l++;
+            }
+            if (r & 1) {
+                r--;
+                acc += segtree[r].sum;
+            }
         }
         if (acc == 0) return i;
         int r = seglen + i;
