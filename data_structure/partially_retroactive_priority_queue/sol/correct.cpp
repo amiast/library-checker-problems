@@ -10,20 +10,29 @@ struct partially_retroactive_priority_queue {
     std::vector<seg_node> segtree;
     long long sum_multiset = 0;
     int count_multiset = 0;
-    int len = 0, seglen = 1;
+    int seglen = 1;
 
     partially_retroactive_priority_queue(int n) {
-        len = n + 1;
-        types.assign(len, 2);
-        vals.assign(len, -1);
-        while (seglen < len) seglen *= 2;
+        n++;
+        types.assign(n, 2);
+        vals.assign(n, -1);
+        while (seglen < n) seglen *= 2;
         segtree.resize(seglen * 2);
     }
 
-    bool comp(int i, int j) const {
-        if (i == 0) return false;
-        if (j == 0) return true;
-        return vals[i] < vals[j];
+    int op_minadd(int i, int j) const {
+        if (i == 0) return j;
+        if (j == 0) return i;
+        if (vals[i] != vals[j]) return vals[i] < vals[j] ? i : j;
+        return std::max(i, j);
+    }
+
+    int op_maxdel(int i, int j) const {
+        if (i == -1) return j;
+        if (j == -1) return i;
+        if (i == 0 || j == 0) return 0;
+        if (vals[i] != vals[j]) return vals[i] > vals[j] ? i : j;
+        return std::min(i, j);
     }
 
     void update(int i) {
@@ -32,27 +41,20 @@ struct partially_retroactive_priority_queue {
             p.sum = l.sum + r.sum;
             p.pfxmin = std::min(l.pfxmin, l.sum + r.pfxmin);
             p.sfxmax = std::max(l.sfxmax + r.sum, r.sfxmax);
-            if (comp(l.minadd, r.minadd)) p.minadd = l.minadd;
-            else p.minadd = r.minadd;
-            if (l.maxdel != -1 && (r.maxdel == -1 || comp(r.maxdel, l.maxdel))) p.maxdel = l.maxdel;
-            else p.maxdel = r.maxdel;
+            p.minadd = op_minadd(l.minadd, r.minadd);
+            p.maxdel = op_maxdel(l.maxdel, r.maxdel);
         }
     }
 
     int next_bridge(int i) const {
+        i++;
         int acc = 0;
-        for (int l = seglen, r = seglen + i + 1; l < r; l >>= 1, r >>= 1) {
-            if (l & 1) {
-                acc += segtree[l].sum;
-                l++;
-            }
-            if (r & 1) {
-                r--;
-                acc += segtree[r].sum;
-            }
+        for (int l = seglen, r = seglen + i; l < r; l >>= 1, r >>= 1) {
+            if (l & 1) acc += segtree[l++].sum;
+            if (r & 1) acc += segtree[--r].sum;
         }
         if (acc == 0) return i;
-        int l = seglen + i + 1;
+        int l = seglen + i;
         do {
             while (~l & 1) l >>= 1;
             if (acc + segtree[l].pfxmin == 0) {
@@ -68,20 +70,14 @@ struct partially_retroactive_priority_queue {
             acc += segtree[l].sum;
             l++;
         } while ((l & -l) != l);
-        return len - 1;
+        return seglen;
     }
 
     int prev_bridge(int i) const {
         int acc = 0;
         for (int l = seglen + i, r = seglen * 2; l < r; l >>= 1, r >>= 1) {
-            if (l & 1) {
-                acc += segtree[l].sum;
-                l++;
-            }
-            if (r & 1) {
-                r--;
-                acc += segtree[r].sum;
-            }
+            if (l & 1) acc += segtree[l++].sum;
+            if (r & 1) acc += segtree[--r].sum;
         }
         if (acc == 0) return i;
         int r = seglen + i;
@@ -106,32 +102,18 @@ struct partially_retroactive_priority_queue {
 
     int minadd(int i) const {
         int k = 0;
-        int bridge = next_bridge(i);
-        for (int l = seglen, r = seglen + bridge + 1; l < r; l >>= 1, r >>= 1) {
-            if (l & 1) {
-                if (comp(segtree[l].minadd, k)) k = segtree[l].minadd;
-                l++;
-            }
-            if (r & 1) {
-                r--;
-                if (comp(segtree[r].minadd, k)) k = segtree[r].minadd;
-            }
+        for (int l = seglen, r = seglen + next_bridge(i); l < r; l >>= 1, r >>= 1) {
+            if (l & 1) k = op_minadd(k, segtree[l++].minadd);
+            if (r & 1) k = op_minadd(k, segtree[--r].minadd);
         }
         return k;
     }
 
     int maxdel(int i) const {
         int k = -1;
-        int bridge = prev_bridge(i);
-        for (int l = seglen + bridge, r = seglen * 2; l < r; l >>= 1, r >>= 1) {
-            if (l & 1) {
-                if (segtree[l].maxdel != -1 && (k == -1 || comp(k, segtree[l].maxdel))) k = segtree[l].maxdel;
-                l++;
-            }
-            if (r & 1) {
-                r--;
-                if (segtree[r].maxdel != -1 && (k == -1 || comp(k, segtree[r].maxdel))) k = segtree[r].maxdel;
-            }
+        for (int l = seglen + prev_bridge(i), r = seglen * 2; l < r; l >>= 1, r >>= 1) {
+            if (l & 1) k = op_maxdel(k, segtree[l++].maxdel);
+            if (r & 1) k = op_maxdel(k, segtree[--r].maxdel);
         }
         return k;
     }
@@ -139,7 +121,7 @@ struct partially_retroactive_priority_queue {
     void push(int i) {
         int k = maxdel(i);
         seg_node &n = segtree[seglen + i];
-        if (k == -1 || comp(k, i)) {
+        if (op_maxdel(i, k) == i) {
             sum_multiset += vals[i];
             count_multiset++;
             n.minadd = i;

@@ -74,6 +74,10 @@ forum = "https://github.com/yosupo06/library-checker-problems/issues/1213"
     name = "a_eq_2.cpp"
     number = 2
 
+[[tests]]
+    name = "hack_tiebreak.in"
+    number = 2
+
 [[solutions]]
     name = "naive.cpp"
     allow_tle = true
