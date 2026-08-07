@@ -80,8 +80,8 @@ forum = "https://github.com/yosupo06/library-checker-problems/issues/1213"
 
 [params]
     N_MIN = 1
-    N_MAX = 100_000
+    N_MAX = 200_000
     Q_MIN = 1
-    Q_MAX = 100_000
+    Q_MAX = 200_000
     X_MIN = 0
     X_MAX = 1_000_000_000
