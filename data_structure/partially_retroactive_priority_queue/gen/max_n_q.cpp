@@ -12,7 +12,6 @@ int main(int, char* argv[]) {
 
     auto gen_pair = [&]() -> std::pair<int, int> {
         double d = gen.uniform01();
-        if (d < .1) return {2, -1};
         if (d < .4) return {1, -1};
         int x = gen.uniform<int>(X_MIN, X_MAX);
         return {0, x};

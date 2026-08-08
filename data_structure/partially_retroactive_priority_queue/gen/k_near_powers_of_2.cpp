@@ -26,18 +26,23 @@ int main(int, char* argv[]) {
     int K = k_pos.size();
     std::sort(k_pos.begin(), k_pos.end());
     k_pos.erase(std::unique(k_pos.begin(), k_pos.end()), k_pos.end());
+    std::vector<int> valid_pos(N);
+    for (int k : k_pos) valid_pos[k] = 1;
 
     auto gen_pair = [&]() -> std::pair<int, int> {
         double d = gen.uniform01();
-        if (d < .1) return {2, -1};
         if (d < .4) return {1, -1};
         int x = gen.uniform<int>(X_MIN, X_MAX);
         return {0, x};
     };
 
     for (int i = 0; i < N; i++) {
-        auto [t, x] = gen_pair();
-        printf("%d %d\n", t, x);
+        if (valid_pos[i]) {
+            auto [t, x] = gen_pair();
+            printf("%d %d\n", t, x);
+        } else {
+            printf("%d %d\n", 2, -1);
+        }
     }
 
     for (int i = 0; i < Q; i++) {
