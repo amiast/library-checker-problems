@@ -27,6 +27,10 @@ forum = "https://github.com/yosupo06/library-checker-problems/issues/1213"
     number = 3
 
 [[tests]]
+    name = "min_n_max_q.cpp"
+    number = 1
+
+[[tests]]
     name = "max_n_q.cpp"
     number = 3
 
